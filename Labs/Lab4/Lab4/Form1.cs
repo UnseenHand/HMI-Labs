@@ -14,11 +14,12 @@ namespace Lab4
 {
     public partial class Form1 : Form
     {
-        string conString = "Server=(localdb)\\MSSQLLocalDB;Database=RecreationBase;Trusted_Connection=True;";
+        private readonly SqlHelper _db;
 
         public Form1()
         {
             InitializeComponent();
+            _db = new SqlHelper();
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -34,14 +35,13 @@ namespace Lab4
             Close();
         }
 
-        private void displayToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void displayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var viewBase = new ViewBase
             {
-                MdiParent = this
+                MdiParent = this,
+                Text = $"There is {await _db.Count()} records in DB!"
             };
-            var db = new SqlHelper();
-            viewBase.Text = "В БД " + db.Count().ToString() + " записів!!!!";
             viewBase.Show();
         }
 
@@ -54,9 +54,9 @@ namespace Lab4
         {
             var dbTable = new DbTableCreate
             {
-                MdiParent = this
+                MdiParent = this,
+                Text = "Create Table For Your Database"
             };
-            dbTable.Text = "Create Table For Your Database";
             dbTable.Show();
         }
 
@@ -64,10 +64,15 @@ namespace Lab4
         {
             var dbTable = new AddBase
             {
-                MdiParent = this
+                MdiParent = this,
+                Text = "Add new record"
             };
-            dbTable.Text = "Add new record";
             dbTable.Show();
+        }
+
+        private void знищитиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

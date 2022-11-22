@@ -14,24 +14,6 @@ namespace Lab4.DAL
 {
     public class SqlHelper
     {
-        //OleDbConnection conn;
-        //DataSet ds = new DataSet();
-        //DbCommand comm;
-        //public SqlHelper(string conString)
-        //{
-        //    conn = new OleDbConnection(conString);
-        //}
-
-        //public void OpenCon()
-        //{
-        //    conn.Open();
-        //}
-
-        //public void CloseCon()
-        //{
-        //    conn.Close();
-        //}
-
         public static async Task CreateDb()
         {
             string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=master;Integrated Security=True;";
@@ -87,29 +69,96 @@ namespace Lab4.DAL
 
         public async Task<int> Count()
         {
-            string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=master;Integrated Security=True;";
+            string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=RecreationBase;Integrated Security=True;";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+                var command = new SqlCommand
+                {
+                    CommandText = "SELECT COUNT(*) FROM Bases",
+                    Connection = connection
+                };
+                return (int)await command.ExecuteScalarAsync();
+            }
+        }
+
+        public async Task AddNewBase(Base @base)
+        {
+            string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=RecreationBase;Integrated Security=True;MultipleActiveResultSets=True";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
                 SqlCommand command = new SqlCommand();
-                command.CommandText = "Select count(*) from Base";
-                var count = command.ExecuteScalarAsync().Result;
-                return (int)count;
+                command.CommandText = "INSERT INTO Bases (Id , BaseName, City, RoomPrice, SeaDistance) VALUES(@Id, @BaseName, @City, @RoomPrice, @SeaDistance)";
+                if (@base.BaseName != string.Empty
+                    && @base.City != string.Empty
+                    && @base.RoomPrice != default
+                    && @base.SeaDistance != default)
+                {
+                    SqlCommand commandCheck = new SqlCommand();
+                    commandCheck.CommandText = $"SELECT * FROM Bases";
+                    commandCheck.Connection = connection;
+                    var id = 0;
+                    if (commandCheck.ExecuteScalarAsync() != null)
+                    {
+                        SqlCommand command1 = new SqlCommand();
+                        command1.CommandText = "SELECT * FROM Bases";
+                        command1.Connection = connection;
+                        var records = new List<Base>();
+                        using (SqlDataReader dataReader = await command1.ExecuteReaderAsync())
+                        {
+                            while (dataReader.Read())
+                            {
+                                var b = new Base
+                                {
+                                    Id = Convert.ToInt32(dataReader["Id"]),
+                                    BaseName = Convert.ToString(dataReader["BaseName"]),
+                                    City = Convert.ToString(dataReader["City"]),
+                                    RoomPrice = Convert.ToDecimal(dataReader["RoomPrice"]),
+                                    SeaDistance = Convert.ToDouble(dataReader["SeaDistance"])
+                                };
+                                records.Add(b);
+                            }
+                        }
+                        id = records.Last().Id + 1;
+                    }
+                    else
+                    {
+                        id = 1;
+                    }
+                    command.Parameters.AddWithValue("@Id", id);
+                    command.Parameters.AddWithValue("@BaseName", @base.BaseName);
+                    command.Parameters.AddWithValue("@City", @base.City);
+                    command.Parameters.AddWithValue("@RoomPrice", @base.RoomPrice);
+                    command.Parameters.AddWithValue("@SeaDistance", @base.SeaDistance);
+                    command.Connection = connection;
+                    await command.ExecuteNonQueryAsync();
+                }
+                else
+                {
+                    MessageBox.Show("Invalid input!");
+                }
+                connection.Close();
             }
         }
 
-        public async Task AddBase()
+        public async Task<DataTable> GetBases()
         {
             string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=RecreationBase;Integrated Security=True;";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
-                //checking whether Table exists or not and creates it if not
+                DataTable table = new DataTable();
                 SqlCommand command = new SqlCommand();
-                command.CommandText = "INSERT INTO Bases (Id , BaseName, City, RoomPrice, SeaDistance) VALUES()";
-
-                connection.Close();
+                command.CommandText = "SELECT * FROM Bases";
+                command.Connection = connection;
+                using (SqlDataReader dataReader = await command.ExecuteReaderAsync())
+                {
+                    table.Load(dataReader);
+                }
+                return table;
             }
         }
+
     }
 }

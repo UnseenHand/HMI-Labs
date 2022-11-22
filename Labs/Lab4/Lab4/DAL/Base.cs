@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace Lab4.DAL
 {
-    internal class Base
+    public class Base
     {
         public int Id { get; set; }
-        [Range()]
-        public string Description { get; set; }
-        
+        [MaxLength(100)]
+        public string BaseName { get; set; }
+        [MaxLength(100)]
+        public string City { get; set; }
+        public decimal RoomPrice { get; set; }
+        public double SeaDistance { get; set; }
     }
 }
