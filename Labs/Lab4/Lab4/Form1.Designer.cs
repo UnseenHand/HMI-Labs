@@ -32,13 +32,13 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.запитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.displayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.знищитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.фільтриToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.поIDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,9 +73,16 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // createTableToolStripMenuItem
+            // 
+            this.createTableToolStripMenuItem.Name = "createTableToolStripMenuItem";
+            this.createTableToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.createTableToolStripMenuItem.Text = "CreateTable";
+            this.createTableToolStripMenuItem.Click += new System.EventHandler(this.createTableToolStripMenuItem_Click);
             // 
             // запитиToolStripMenuItem
             // 
@@ -106,6 +113,7 @@
             this.знищитиToolStripMenuItem.Name = "знищитиToolStripMenuItem";
             this.знищитиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.знищитиToolStripMenuItem.Text = "Delete";
+            this.знищитиToolStripMenuItem.Click += new System.EventHandler(this.знищитиToolStripMenuItem_Click);
             // 
             // фільтриToolStripMenuItem
             // 
@@ -120,13 +128,6 @@
             this.поIDToolStripMenuItem.Name = "поIDToolStripMenuItem";
             this.поIDToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
             this.поIDToolStripMenuItem.Text = "By ID";
-            // 
-            // createTableToolStripMenuItem
-            // 
-            this.createTableToolStripMenuItem.Name = "createTableToolStripMenuItem";
-            this.createTableToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.createTableToolStripMenuItem.Text = "CreateTable";
-            this.createTableToolStripMenuItem.Click += new System.EventHandler(this.createTableToolStripMenuItem_Click);
             // 
             // Form1
             // 
